@@ -179,6 +179,10 @@ for output in ${outputs[@]}; do
     hd_cuvid_scale="w=1280:h=720"
     sd_cuvid_scale="w=1024:h=576"
 
+    fullhd_hevc_cuvid_scale="${fullhd_cuvid_scale}"
+    hd_hevc_cuvid_scale="${hd_cuvid_scale}"
+    sd_hevc_cuvid_scale="${sd_hevc_cuvid_scale}"
+
     scale="${output}_scale"
 
     if [ ${cuvid} -gt 1 ]; then
