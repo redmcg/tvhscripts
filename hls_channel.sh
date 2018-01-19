@@ -114,7 +114,7 @@ done
 achannels=${i}
 subtiles="-sn"
 common="-keyint_min 125 -g 125"
-format="-hls_time 5 -hls_list_size $((60*60*2))"
+format="-hls_time 5 -hls_list_size $((60*60*2)) -hls_segment_type ${segment_type:-mpegts}"
 
 if [ -n "${onestream}" ]; then
   filename="tv_hls.m3u8"
