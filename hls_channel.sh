@@ -247,10 +247,11 @@ if [ -n "${fg}" ]; then
 fi
 
 nohup $cmd ${var_stream_map:+"${var_stream_map}"} $filename &
+ffmpeg_pid=$!
 
 sleep ${sleep:-10}
 
-python - 8080 << END || true
+python - 8080 << END &
 import BaseHTTPServer
 from SocketServer import ThreadingMixIn
 from SimpleHTTPServer import SimpleHTTPRequestHandler
@@ -261,8 +262,8 @@ class ThreadedHTTPServer(ThreadingMixIn, BaseHTTPServer.HTTPServer):
 BaseHTTPServer.test(SimpleHTTPRequestHandler, ThreadedHTTPServer, "HTTP/1.1")
 END
 
-killall ffmpeg
+python_pid=$!
 
-sleep 1
+trap 'kill ${ffmpeg_pid} ${python_pid}; sleep 1; rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4' INT
 
-rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4
+wait
