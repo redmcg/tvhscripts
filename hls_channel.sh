@@ -123,8 +123,7 @@ else
   format="${format} -f tee"
 fi
 
-
-rm -f nohup.out tv_* index.html
+rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4
 
 i=${achannels}
 for output in ${outputs[@]}; do
@@ -262,4 +261,4 @@ killall ffmpeg
 
 sleep 1
 
-rm -f nohup.out tv_* index.html
+rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4
