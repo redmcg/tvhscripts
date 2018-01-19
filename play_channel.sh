@@ -15,14 +15,16 @@ fi
 
 : ${tvh:=tvh}
 
+grid="$(curl -sSu $TVHAUTH -d sort=svcname -d dir=ASC http://${tvh}:9981/api/mpegts/service/grid)"
+
 if [ "$1" == "?" ]; then
-	curl -u $TVHAUTH -d sort=svcname -d dir=ASC http://${tvh}:9981/api/mpegts/service/grid 2> /dev/null | sed 's/[^}]*"lcn": \([^,]*\),[^}]*"svcname": "\([^"]*\)","provider": "\([^"]*\)"[^}]*"dvb_servicetype": \([^,]*\),[^}]*}/\1\: \3 \/ \2 [st\4]\n/g;s/st1/SD/g;s/st25/HD/g;s/st22/SD2/g;s/st2/Radio/g' | head -n-1 | sort -n
+	echo "$grid" | sed 's/[^}]*"lcn": \([^,]*\),[^}]*"svcname": "\([^"]*\)","provider": "\([^"]*\)"[^}]*"dvb_servicetype": \([^,]*\),[^}]*}/\1\: \3 \/ \2 [st\4]\n/g;s/st1/SD/g;s/st25/HD/g;s/st22/SD2/g;s/st2/Radio/g' | head -n-1 | sort -n
   exit
 fi
 
 channel_id=$1
 
-service=$(curl -u $TVHAUTH -d sort=svcname -d dir=ASC http://${tvh}:9981/api/mpegts/service/grid 2> /dev/null | sed 's/.*{"uuid": "\([^"]*\)"[^}]*"lcn": '$1',.*/\1/')
+service=$(echo "$grid" | sed 's/.*{"uuid": "\([^"]*\)"[^}]*"lcn": '$1',.*/\1/')
 url=$(curl -u $TVHAUTH -H 'User-Agent: VLC' http://${tvh}:9981/play/stream/service/$service 2> /dev/null | tail -n1)
 
 if [ -n "$print" ]; then
