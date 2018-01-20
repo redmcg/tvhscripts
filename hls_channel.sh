@@ -191,7 +191,7 @@ for output in ${outputs[@]}; do
       cuvid_filter="${cuvid_filter}[cu${i}]"
       stream_filters="${stream_filters};[cu${i}]scale_cuda=${!scale}[cuvid$i]"
     else
-      cuvid_filter="${cuvid_filter}scale_cuvid=${!scale}[cuvid$i]"
+      cuvid_filter="${cuvid_filter}scale_cuda=${!scale}[cuvid$i]"
     fi
 
     a=${cuvid_achannel}
