@@ -125,7 +125,7 @@ else
   format="${format} -f tee"
 fi
 
-rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4
+rm -f ffmpeg.log tv_*.{ts,m3u8,m4s} index.html init*.mp4
 
 i=${achannels}
 for output in ${outputs[@]}; do
@@ -248,8 +248,7 @@ if [ -n "${fg}" ]; then
   exit
 fi
 
-nohup $cmd ${var_stream_map:+"${var_stream_map}"} $filename &
-ffmpeg_pid=$!
+$cmd ${var_stream_map:+"${var_stream_map}"} $filename &> ffmpeg.log &
 
 sleep ${sleep:-10}
 
@@ -264,8 +263,6 @@ class ThreadedHTTPServer(ThreadingMixIn, BaseHTTPServer.HTTPServer):
 BaseHTTPServer.test(SimpleHTTPRequestHandler, ThreadedHTTPServer, "HTTP/1.1")
 END
 
-python_pid=$!
+trap 'kill $(jobs -rp); wait $(jobs -rp) 2> /dev/null || true; rm -f ffmpeg.log tv_*.{ts,m3u8,m4s} index.html init*.mp4' INT
 
-trap 'kill ${ffmpeg_pid} ${python_pid}; sleep 1; rm -f nohup.out tv_*.{ts,m3u8,m4s} index.html init*.mp4' INT
-
-wait
+wait $(jobs -rp)
