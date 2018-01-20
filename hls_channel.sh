@@ -249,6 +249,7 @@ if [ -n "${fg}" ]; then
 fi
 
 $cmd ${var_stream_map:+"${var_stream_map}"} $filename &> ffmpeg.log &
+echo Starting stream...
 
 sleep ${sleep:-10}
 
