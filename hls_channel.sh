@@ -266,4 +266,6 @@ END
 
 trap 'kill $(jobs -rp); wait $(jobs -rp) 2> /dev/null || true; rm -f ffmpeg.log tv_*.{ts,m3u8,m4s} index.html init*.mp4' INT
 
-wait $(jobs -rp)
+wait $(jobs -rp) 2> /dev/null || true
+
+rm -f ffmpeg.log tv_*.{ts,m3u8,m4s} index.html init*.mp4
