@@ -106,7 +106,7 @@ for input in ${inputs[@]}; do
   fi
 
   ffinput="${ffinput}${decode} -i ${url:0: -1} "
-  audio="${audio} -map ${i}:a -c:${i} aac"
+  audio="${audio} -map ${i}:a -c:${i} aac -ac 2"
   if [ -n "${onestream}" ]; then
     var_stream_map="${var_stream_map} a:$i,agroup:audio_$i"
   fi
