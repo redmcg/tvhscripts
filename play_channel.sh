@@ -3,8 +3,9 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "usage: $0 <channel_id>"
+  echo "usage: $0 <channel_id> [profile]"
   echo "if channel_id = '?' - a list of channels will be presented"
+  echo "profile is the TVH profile to use, for example: pass"
   exit
 fi
 
@@ -23,6 +24,7 @@ if [ "$1" == "?" ]; then
 fi
 
 channel_id=$1
+profile=$2
 
 service=$(echo "$grid" | jq -r '.entries[] | select(.lcn == '$channel_id') | .uuid')
 url=$(curl -u $TVHAUTH -H 'User-Agent: VLC' http://${tvh}:9981/play/stream/service/$service 2> /dev/null | tail -n1)
@@ -32,4 +34,4 @@ if [ -n "$print" ]; then
   exit
 fi
 
-mpv ${url:0: -1}
+mpv "${url:0: -1}${profile:+&profile=$profile}"
