@@ -107,7 +107,7 @@ for input in ${inputs[@]}; do
   fi
 
   ffinput="${ffinput}${decode} -i ${url} "
-  audio="${audio} -map ${i}:a -c:${i} aac"
+  audio="${audio} -map ${i}:a -c:${i} aac -ac 2"
   ((i++)) || true
 done
 
