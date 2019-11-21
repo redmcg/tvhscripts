@@ -27,9 +27,10 @@ channel_id=$1
 
 service=$(echo "$grid" | jq -r '.entries[] | select(.lcn == '$channel_id') | .uuid')
 url=$(curl -u $TVHAUTH -H 'User-Agent: VLC' http://${tvh}:9981/play/stream/service/$service 2> /dev/null | tail -n1)
+url="${url:0: -1}&profile=${profile:-pass}"
 
 if [ -n "$print" ]; then
-  echo -n ${url:0: -1}
+  echo -n ${url}
   exit
 fi
 
@@ -105,7 +106,7 @@ for input in ${inputs[@]}; do
     cuvid_achannel=${i}
   fi
 
-  ffinput="${ffinput}${decode} -i ${url:0: -1} "
+  ffinput="${ffinput}${decode} -i ${url} "
   audio="${audio} -map ${i}:a -c:${i} aac -ac 2"
   if [ -n "${onestream}" ]; then
     var_stream_map="${var_stream_map} a:$i,agroup:audio_$i"
