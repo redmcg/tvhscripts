@@ -254,15 +254,15 @@ echo Starting stream...
 
 sleep ${sleep:-10}
 
-python - 8080 << END &
-import BaseHTTPServer
-from SocketServer import ThreadingMixIn
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+python3 - 8080 << END &
+import http.server
+from socketserver import ThreadingMixIn
+from http.server import SimpleHTTPRequestHandler
 
-class ThreadedHTTPServer(ThreadingMixIn, BaseHTTPServer.HTTPServer):
+class ThreadedHTTPServer(ThreadingMixIn, http.server.HTTPServer):
   pass
 
-BaseHTTPServer.test(SimpleHTTPRequestHandler, ThreadedHTTPServer, "HTTP/1.1")
+http.server.test(SimpleHTTPRequestHandler, ThreadedHTTPServer, "HTTP/1.1")
 END
 
 trap 'kill $(jobs -rp); wait $(jobs -rp) 2> /dev/null || true; rm -f ffmpeg.log tv_*.{ts,m3u8,m4s} index.html init*.mp4' INT
