@@ -28,10 +28,11 @@ profile=$2
 
 service=$(echo "$grid" | jq -r '.entries[] | select(.lcn == '$channel_id') | .uuid')
 url=$(curl -u $TVHAUTH -H 'User-Agent: VLC' http://${tvh}:9981/play/stream/service/$service 2> /dev/null | tail -n1)
+url="${url:0: -1}${profile:+&profile=$profile}"
 
 if [ -n "$print" ]; then
-  echo -n ${url:0: -1}
+  echo -n ${url}
   exit
 fi
 
-mpv "${url:0: -1}${profile:+&profile=$profile}"
+mpv ${url}
