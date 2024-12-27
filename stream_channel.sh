@@ -219,7 +219,7 @@ cmd="${ffmpeg:-ffmpeg} -loglevel ${loglevel:-error} ${ffinput} "\
 "${subtitles} ${audio} ${common} ${filter_complex} "\
 "${stream_data} ${format}"
 
-adaptation_sets="id=a,streams=a id=v,streams=v"
+adaptation_sets="id=0,streams=a id=1,streams=v"
 if [ -n "${printcmd}" ]; then
   echo $cmd ${adaptation_sets:+"${adaptation_sets}"} $filename
   exit
