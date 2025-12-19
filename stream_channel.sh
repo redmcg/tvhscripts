@@ -14,7 +14,7 @@ if [ -z "$TVHAUTH" ]; then
   exit
 fi
 
-: ${tvh:=tvh}
+: ${tvh:=localhost}
 
 grid="$(curl -sSu $TVHAUTH -d sort=svcname -d dir=ASC http://${tvh}:9981/api/mpegts/service/grid)"
 
